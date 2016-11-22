@@ -22,3 +22,8 @@ _testmain.go
 *.exe
 *.test
 *.prof
+go-meshblu-connector-installer
+entrypoint/go-meshblu-connector-installer
+go-go-meshblu-connector-installer
+entrypoint/go-go-meshblu-connector-installer
+dist
