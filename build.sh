@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_NAME=go-meshblu-connector-installer
+APP_NAME=go-meshblu-connector-uninstaller
 BUILD_DIR=$PWD/dist
 IMAGE_NAME=local/$APP_NAME
 

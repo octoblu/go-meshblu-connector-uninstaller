@@ -22,8 +22,8 @@ _testmain.go
 *.exe
 *.test
 *.prof
-go-meshblu-connector-installer
-entrypoint/go-meshblu-connector-installer
-go-go-meshblu-connector-installer
-entrypoint/go-go-meshblu-connector-installer
+go-meshblu-connector-uninstaller
+entrypoint/go-meshblu-connector-uninstaller
+go-go-meshblu-connector-uninstaller
+entrypoint/go-go-meshblu-connector-uninstaller
 dist

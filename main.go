@@ -8,23 +8,23 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"github.com/coreos/go-semver/semver"
 	"github.com/fatih/color"
 	De "github.com/visionmedia/go-debug"
 )
 
-var debug = De.Debug("go-meshblu-connector-installer:main")
+var debug = De.Debug("go-meshblu-connector-uninstaller:main")
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "go-meshblu-connector-installer"
+	app.Name = "go-meshblu-connector-uninstaller"
 	app.Version = version()
 	app.Action = run
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "example, e",
-			EnvVar: "GO_MESHBLU_CONNECTOR_INSTALLER_EXAMPLE",
+			EnvVar: "GO_MESHBLU_CONNECTOR_UNINSTALLER_EXAMPLE",
 			Usage:  "Example string flag",
 		},
 	}
@@ -51,7 +51,7 @@ func run(context *cli.Context) {
 			os.Exit(0)
 		}
 
-		debug("go-meshblu-connector-installer.loop: %v", example)
+		debug("go-meshblu-connector-uninstaller.loop: %v", example)
 		time.Sleep(1 * time.Second)
 	}
 }
@@ -63,7 +63,7 @@ func getOpts(context *cli.Context) string {
 		cli.ShowAppHelp(context)
 
 		if example == "" {
-			color.Red("  Missing required flag --example or GO_MESHBLU_CONNECTOR_INSTALLER_EXAMPLE")
+			color.Red("  Missing required flag --example or GO_MESHBLU_CONNECTOR_UNINSTALLER_EXAMPLE")
 		}
 		os.Exit(1)
 	}
