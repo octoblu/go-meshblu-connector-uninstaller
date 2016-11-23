@@ -21,6 +21,13 @@ func main() {
 	app.Version = version()
 	app.Commands = []cli.Command{
 		{
+			Name:      "service",
+			Usage:     "uninstall a connector installed as a Service",
+			ArgsUsage: "<uuid>",
+			Action:    Service,
+			Flags:     []cli.Flag{},
+		},
+		{
 			Name:      "user-service",
 			Usage:     "uninstall a connector installed as a UserService",
 			ArgsUsage: "<uuid>",
@@ -43,18 +50,22 @@ func main() {
 	app.Run(os.Args)
 }
 
+// Service uninstalls a connector insalled as a Service
+func Service(context *cli.Context) {
+	uuid := getServiceOpts(context)
+	err := manage.UninstallService(&manage.UninstallServiceOptions{UUID: uuid})
+	die(err)
+}
+
 // UserService uninstalls a connector installed as a UserService
 func UserService(context *cli.Context) {
 	homeDir, username, uuid := getUserServiceOpts(context)
-	err := manage.Uninstall(&manage.UninstallOptions{
+	err := manage.UninstallUserService(&manage.UninstallUserServiceOptions{
 		UUID:            uuid,
 		HomeDir:         homeDir,
 		ServiceUsername: username,
 	})
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	os.Exit(0)
+	die(err)
 }
 
 func anyFlagsMissing(context *cli.Context, flagNames ...string) bool {
@@ -64,6 +75,28 @@ func anyFlagsMissing(context *cli.Context, flagNames ...string) bool {
 		}
 	}
 	return true
+}
+
+func die(err error) {
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	os.Exit(0)
+}
+
+func getServiceOpts(context *cli.Context) string {
+	uuid := context.Args().Get(0)
+	if uuid == "" {
+		cli.ShowAppHelp(context)
+
+		fmt.Println()
+
+		if uuid == "" {
+			color.Red("Missing required argument <uuid>")
+		}
+		os.Exit(1)
+	}
+	return uuid
 }
 
 func getUserServiceOpts(context *cli.Context) (string, string, string) {

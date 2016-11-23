@@ -31,13 +31,6 @@
 			"notests": true
 		},
 		{
-			"importpath": "github.com/kardianos/service",
-			"repository": "https://github.com/kardianos/service",
-			"revision": "6d3a0ee7d3425d9d835debc51a0ca1ffa28f4893",
-			"branch": "master",
-			"notests": true
-		},
-		{
 			"importpath": "github.com/mattn/go-colorable",
 			"repository": "https://github.com/mattn/go-colorable",
 			"revision": "v0.0.6",
@@ -48,6 +41,13 @@
 			"importpath": "github.com/mattn/go-isatty",
 			"repository": "https://github.com/mattn/go-isatty",
 			"revision": "v0.0.1",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/octoblu/go-meshblu-connector-service",
+			"repository": "https://github.com/octoblu/go-meshblu-connector-service",
+			"revision": "v1.0.0",
 			"branch": "master",
 			"notests": true
 		},
