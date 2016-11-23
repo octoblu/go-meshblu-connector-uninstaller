@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/signal"
-	"syscall"
-	"time"
 
-	"github.com/urfave/cli"
 	"github.com/coreos/go-semver/semver"
 	"github.com/fatih/color"
+	"github.com/octoblu/go-meshblu-connector-service/manage"
+	"github.com/urfave/cli"
 	De "github.com/visionmedia/go-debug"
 )
 
@@ -19,56 +17,58 @@ var debug = De.Debug("go-meshblu-connector-uninstaller:main")
 func main() {
 	app := cli.NewApp()
 	app.Name = "go-meshblu-connector-uninstaller"
+	app.UsageText = "go-meshblu-connector-uninstaller [options] <uuid>"
 	app.Version = version()
 	app.Action = run
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:   "example, e",
-			EnvVar: "GO_MESHBLU_CONNECTOR_UNINSTALLER_EXAMPLE",
-			Usage:  "Example string flag",
+			Name:   "home-dir, H",
+			Usage:  "Home directory of the user",
+			EnvVar: "HOME",
+		},
+		cli.StringFlag{
+			Name:   "username, u",
+			Usage:  "System Username",
+			EnvVar: "USER",
 		},
 	}
 	app.Run(os.Args)
 }
 
 func run(context *cli.Context) {
-	example := getOpts(context)
-
-	sigTerm := make(chan os.Signal)
-	signal.Notify(sigTerm, syscall.SIGTERM)
-
-	sigTermReceived := false
-
-	go func() {
-		<-sigTerm
-		fmt.Println("SIGTERM received, waiting to exit")
-		sigTermReceived = true
-	}()
-
-	for {
-		if sigTermReceived {
-			fmt.Println("I'll be back.")
-			os.Exit(0)
-		}
-
-		debug("go-meshblu-connector-uninstaller.loop: %v", example)
-		time.Sleep(1 * time.Second)
+	homeDir, username, uuid := getOpts(context)
+	err := manage.Uninstall(&manage.UninstallOptions{
+		UUID:            uuid,
+		HomeDir:         homeDir,
+		ServiceUsername: username,
+	})
+	if err != nil {
+		log.Fatalln(err.Error())
 	}
+	os.Exit(0)
 }
 
-func getOpts(context *cli.Context) string {
-	example := context.String("example")
+func getOpts(context *cli.Context) (string, string, string) {
+	homeDir := context.String("home-dir")
+	username := context.String("username")
+	uuid := context.Args().Get(0)
 
-	if example == "" {
+	if homeDir == "" || username == "" || uuid == "" {
 		cli.ShowAppHelp(context)
 
-		if example == "" {
-			color.Red("  Missing required flag --example or GO_MESHBLU_CONNECTOR_UNINSTALLER_EXAMPLE")
+		if homeDir == "" {
+			color.Red("  Missing required option --home-dir, -H, env: HOME")
+		}
+		if username == "" {
+			color.Red("  Missing required option --username, -u, env: USER")
+		}
+		if uuid == "" {
+			color.Red("  Missing required argument <uuid>")
 		}
 		os.Exit(1)
 	}
 
-	return example
+	return homeDir, username, uuid
 }
 
 func version() string {
