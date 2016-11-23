@@ -20,7 +20,7 @@ build_osx_on_local() {
 }
 
 copy() {
-  cp $BUILD_DIR/$APP_NAME* entrypoint/
+  cp $BUILD_DIR/$APP_NAME-linux-amd64 entrypoint/$APP_NAME
 }
 
 init() {
@@ -36,7 +36,7 @@ run() {
   docker run --rm \
     --volume $BUILD_DIR:/export/ \
     $IMAGE_NAME:built \
-      cp $APP_NAME /export
+      /bin/bash -c "cp dist/* /export" # /bin/bash -c needed for '*' expansion
 }
 
 fatal() {
@@ -46,7 +46,8 @@ fatal() {
 }
 
 cross_compile_build(){
-  for goos in darwin linux windows; do
+  # for goos in darwin linux windows; do
+  for goos in darwin linux; do
     for goarch in 386 amd64; do
       echo "building: ${goos}-${goarch}"
       build_on_local "$goos" "$goarch" > /dev/null

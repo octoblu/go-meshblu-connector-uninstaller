@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/kardianos/service"
-	De "github.com/tj/go-debug"
+	De "github.com/visionmedia/go-debug"
 )
 
 var debug = De.Debug("meshblu-connector-service:manage")
@@ -32,6 +32,10 @@ func deregisterService(uuid string) error {
 		return err
 	}
 
+	err = svc.Stop()
+	if err != nil {
+		debug("failed to stop service, might not have been running: %v", err.Error())
+	}
 	return svc.Uninstall()
 }
 

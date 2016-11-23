@@ -3,6 +3,5 @@ go-meshblu-connector-uninstaller
 entrypoint/go-meshblu-connector-uninstaller
 go-go-meshblu-connector-uninstaller
 entrypoint/go-go-meshblu-connector-uninstaller
-build.sh
 cross-compile.sh
 README.md
