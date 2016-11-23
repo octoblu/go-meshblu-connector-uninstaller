@@ -1,6 +1,7 @@
 language: go
 go:
 - '1.7'
+install: false
 script:
 - ./go.test.sh
 before_deploy:
