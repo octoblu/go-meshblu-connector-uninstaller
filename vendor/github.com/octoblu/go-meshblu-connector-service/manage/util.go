@@ -1,6 +1,7 @@
 package manage
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -40,6 +41,7 @@ func deregisterService(uuid string) error {
 }
 
 func deregisterUserService(uuid, serviceUsername, servicePassword string) error {
+	fmt.Println("deregisterUserService", uuid, serviceUsername, servicePassword)
 	config := &service.Config{
 		Name: serviceName(uuid),
 		Option: service.KeyValue{
@@ -55,6 +57,10 @@ func deregisterUserService(uuid, serviceUsername, servicePassword string) error 
 		return err
 	}
 
+	err = svc.Stop()
+	if err != nil {
+		debug("failed to stop service, might not have been running: %v", err.Error())
+	}
 	return svc.Uninstall()
 }
 

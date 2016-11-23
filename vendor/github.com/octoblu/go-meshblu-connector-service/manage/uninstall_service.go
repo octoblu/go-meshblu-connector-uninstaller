@@ -1,6 +1,6 @@
 package manage
 
-// UninstallServiceOptions are used to call Uninstall
+// UninstallServiceOptions are used to call UninstallService
 type UninstallServiceOptions struct {
 	// UUID is the UUID of the connector to uninstall
 	UUID string

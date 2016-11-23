@@ -28,6 +28,19 @@ func main() {
 			Flags:     []cli.Flag{},
 		},
 		{
+			Name:      "user-login",
+			Usage:     "uninstall a connector installed as a UserLogin service (windows only)",
+			ArgsUsage: "<uuid>",
+			Action:    UserLogin,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:   "local-app-data, l",
+					Usage:  "Local AppData directory of the user.",
+					EnvVar: "LOCALAPPDATA",
+				},
+			},
+		},
+		{
 			Name:      "user-service",
 			Usage:     "uninstall a connector installed as a UserService",
 			ArgsUsage: "<uuid>",
@@ -52,29 +65,20 @@ func main() {
 
 // Service uninstalls a connector insalled as a Service
 func Service(context *cli.Context) {
-	uuid := getServiceOpts(context)
+	uuid := serviceOpts(context)
 	err := manage.UninstallService(&manage.UninstallServiceOptions{UUID: uuid})
 	die(err)
 }
 
 // UserService uninstalls a connector installed as a UserService
 func UserService(context *cli.Context) {
-	homeDir, username, uuid := getUserServiceOpts(context)
+	homeDir, username, uuid := userServiceOpts(context)
 	err := manage.UninstallUserService(&manage.UninstallUserServiceOptions{
 		UUID:            uuid,
 		HomeDir:         homeDir,
 		ServiceUsername: username,
 	})
 	die(err)
-}
-
-func anyFlagsMissing(context *cli.Context, flagNames ...string) bool {
-	for _, flagName := range flagNames {
-		if !context.IsSet(flagName) {
-			return false
-		}
-	}
-	return true
 }
 
 func die(err error) {
@@ -84,10 +88,10 @@ func die(err error) {
 	os.Exit(0)
 }
 
-func getServiceOpts(context *cli.Context) string {
+func serviceOpts(context *cli.Context) string {
 	uuid := context.Args().Get(0)
 	if uuid == "" {
-		cli.ShowAppHelp(context)
+		cli.ShowCommandHelp(context, "service")
 
 		fmt.Println()
 
@@ -99,20 +103,20 @@ func getServiceOpts(context *cli.Context) string {
 	return uuid
 }
 
-func getUserServiceOpts(context *cli.Context) (string, string, string) {
+func userServiceOpts(context *cli.Context) (string, string, string) {
 	homeDir := context.String("home-dir")
 	username := context.String("username")
 	uuid := context.Args().Get(0)
 
-	if uuid == "" || anyFlagsMissing(context, "home-dir", "username") {
-		cli.ShowAppHelp(context)
+	if uuid == "" || homeDir == "" || username == "" {
+		cli.ShowCommandHelp(context, "user-service")
 
 		fmt.Println()
 
-		if !context.IsSet("home-dir") {
+		if homeDir == "" {
 			color.Red("Missing required option --home-dir, -H, env: HOME")
 		}
-		if !context.IsSet("username") {
+		if username == "" {
 			color.Red("Missing required option --username, -u, env: USER")
 		}
 		if uuid == "" {

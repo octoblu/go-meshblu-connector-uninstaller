@@ -12,7 +12,19 @@ build_on_local() {
   local goos="$1"
   local goarch="$2"
 
-  env GOOS="$goos" GOARCH="$goarch" go build -a -tags netgo -installsuffix cgo -ldflags '-w' -o "${BUILD_DIR}/${APP_NAME}-${goos}-${goarch}" .
+  local output_file="${BUILD_DIR}/${APP_NAME}-${goos}-${goarch}"
+  if [ "$goos" == "windows" ]; then
+    output_file="${output_file}.exe"
+  fi
+
+  env GOOS="$goos" GOARCH="$goarch" \
+    go build \
+      -a \
+      -tags netgo \
+      -installsuffix cgo \
+      -ldflags '-w' \
+      -o "$output_file" \
+      .
 }
 
 build_osx_on_local() {
@@ -46,8 +58,7 @@ fatal() {
 }
 
 cross_compile_build(){
-  # for goos in darwin linux windows; do
-  for goos in darwin linux; do
+  for goos in darwin linux windows; do
     for goarch in 386 amd64; do
       echo "building: ${goos}-${goarch}"
       build_on_local "$goos" "$goarch" > /dev/null

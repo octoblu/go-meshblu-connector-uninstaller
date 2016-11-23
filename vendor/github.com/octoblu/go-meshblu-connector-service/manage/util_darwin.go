@@ -5,6 +5,14 @@ import (
 	"path/filepath"
 )
 
+func deregisterUserLogin(localAppData, uuid string) error {
+	return fmt.Errorf("UserLogin is windows only, not supported on macOS")
+}
+
+func removeUserLoginDirectories(localAppData, uuid string) error {
+	return fmt.Errorf("UserLogin is windows only, not supported on macOS")
+}
+
 func serviceName(uuid string) string {
 	return fmt.Sprintf("com.octoblu.%s", uuid)
 }

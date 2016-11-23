@@ -6,6 +6,14 @@ import (
 	"path/filepath"
 )
 
+func deregisterUserLogin(localAppData, uuid string) error {
+	return fmt.Errorf("UserLogin is windows only, not supported on linux")
+}
+
+func removeUserLoginDirectories(localAppData, uuid string) error {
+	return fmt.Errorf("UserLogin is windows only, not supported on Linux")
+}
+
 func serviceName(uuid string) string {
 	return fmt.Sprintf("MeshbluConnector-%s", uuid)
 }
