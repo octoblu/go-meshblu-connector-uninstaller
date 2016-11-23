@@ -14,8 +14,13 @@ deploy:
   provider: releases
   api_key:
     secure: UI+BBymL3AG8UEDzZAzovfaWqzhRnK0k4CckF2PxneRS2Ih0uKjl9QrqXrtzTZQbt387CytfrehRk54eFGfBnHlXDW87Vqc1t2av0k7BbZGM2mTYiQ1ETLTbazne5HuyCU4gb9uDCopJOnXws4wR+t87zvISQKCuoih1pTVhDLaX2wlUnhgrj3f/dbD8TTbZqaICXyZVn+1dAX+k3wOdwSFV8cjhV227Myn9hbmUyJF8+wjTuMBNlyAP/mAy0NX/ZTjW7rLDqlwUrb78uivwD00YhlxpKEwzOQUe5yDpEx1+7+/RO+Ba0NQ0DFT1AZDEkZc/EwhPiNDaS+msiZitEBwmnr7gqqwtGhWWcDM0IzaCLtV7M4lCaxaZZK42D7lt/UNSrWvnulIlM87HU57WgozFXYghED4OKuImiOfaRvL4/HJL2qdXYG8hoUwr8NMuRjHx2fluR8j/xWU4AmB3PPaorYByuY1P4eTz53j+Ga0PQFWV9Bo4FmhuUZzX2Wc8RlM0Jf8+JP6C6C74hGUNQjWjz75CP0n3M15FTwHa18xNBjQQk6gJO9S0/sqZ+QMD3jucsVtjVPZIKZ+7etZEDfaUJxGnJwgSrEn1VI8NS/voG7b2C2+yYHTmUuYAjMHFNiiZt6gBDH15M+hAZ8wIQKdY3mhc418EvOZzi7oKAJ4=
-  file: 
-    - dist/*
+  file:
+    - dist/meshblu-connector-uninstaller-darwin-386
+    - dist/meshblu-connector-uninstaller-darwin-amd64
+    - dist/meshblu-connector-uninstaller-linux-386
+    - dist/meshblu-connector-uninstaller-linux-amd64
+    - dist/meshblu-connector-uninstaller-windows-386.exe
+    - dist/meshblu-connector-uninstaller-windows-amd64.exe
   skip_cleanup: true
   on:
     tags: true
