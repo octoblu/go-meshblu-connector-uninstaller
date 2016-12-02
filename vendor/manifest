@@ -47,7 +47,7 @@
 		{
 			"importpath": "github.com/octoblu/go-meshblu-connector-service",
 			"repository": "https://github.com/octoblu/go-meshblu-connector-service",
-			"revision": "v1.2.1",
+			"revision": "v1.2.2",
 			"branch": "master",
 			"notests": true
 		},

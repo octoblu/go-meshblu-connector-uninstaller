@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"time"
 
 	"golang.org/x/sys/windows/registry"
 )
@@ -48,7 +49,22 @@ func killUserLoginProcess(localAppData, uuid string) error {
 }
 
 func removeUserLoginDirectories(localAppData, uuid string) error {
-	return os.RemoveAll(connectorUserLoginDirectory(localAppData, uuid))
+	var err error
+
+	for i := 0; i < 10; i++ {
+		err = os.RemoveAll(connectorUserLoginDirectory(localAppData, uuid))
+		debug("removeUserLoginDirectories attempt %v/10: %v", i+1, err)
+		if _, isPathError := err.(*os.PathError); isPathError {
+			debug("is a PathError, will try again in 10s")
+			time.Sleep(10 * time.Second)
+			continue
+		}
+
+		debug("Am not trying again because the error was: %v", err)
+		return err
+	}
+
+	return fmt.Errorf("Failed to remove directories: %v", err.Error())
 }
 
 func serviceName(uuid string) string {
